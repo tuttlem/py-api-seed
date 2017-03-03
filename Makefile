@@ -1,11 +1,12 @@
 
 VIRTUALENV=$(shell which virtualenv)
+PYTHON3=$(shell which python3)
 
 clean: 
 	rm -Rf env
 
 venv:
-	$(VIRTUALENV) -p /usr/bin/python3 env
+	$(VIRTUALENV) -p $(PYTHON3) env
 
 install: clean venv
 	. env/bin/activate; pip install -r requirements.txt

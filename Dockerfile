@@ -6,8 +6,7 @@ RUN apt-get update && \
   	rm -Rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN easy_install pip
-
-WORKDIR /usr/src/app
+RUN pip install virtualenv
 
 #
 # Add the application code to the docker container and install 
@@ -15,7 +14,9 @@ WORKDIR /usr/src/app
 # 
 
 ADD . /usr/src/app
-RUN pip install -r requirements.txt
+WORKDIR /usr/src/app
+
+RUN make install
 
 #
 # Kick off the application server now
@@ -23,4 +24,5 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--log-config", "gunicorn_logging.conf", "-c", "gunicorn_config.py", "pyapi:app"]
+# CMD ["gunicorn", "--log-config", "gunicorn_logging.conf", "-c", "gunicorn_config.py", "pyapi:app"]
+CMD ["make", "gunicorn"]
